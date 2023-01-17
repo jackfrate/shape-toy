@@ -9,12 +9,13 @@ import RectEditor from "./RectEditor";
 type Props = {
     shapeData: ShapeData;
     onShapeUpdate: (newShapeData: ShapeData) => void;
-    onShapeDelete: (shapeData: ShapeData) => void;
+    onShapeDelete: () => void;
 };
 
 const ShapeEditorContainer: React.FC<Props> = ({
     shapeData,
     onShapeUpdate,
+    onShapeDelete,
 }: Props) => {
     // TODO: if we have time, change this up to not render twice
     const shapeSpecificOptions = () => {
@@ -45,7 +46,9 @@ const ShapeEditorContainer: React.FC<Props> = ({
         <div className="card w-96 bg-base-300 shadow-xl">
             <div className="card-body flex flex-col gap-4">
                 <div className="flex flex-row justify-between items-center">
-                    <div className="btn btn-error">Delete</div>
+                    <div className="btn btn-error" onClick={() => onShapeDelete()}>
+                        Delete
+                    </div>
                     <div className="capitalize text-xl">{shapeData.type}</div>
                 </div>
                 <div className="flex flex-row gap-8 pl-4 items-center">

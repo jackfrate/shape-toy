@@ -2,11 +2,25 @@ import { useState } from "react";
 import {
     CircleData,
     createShape,
+    deleteShape,
     RectangleData,
     ShapeData,
+    updateShape,
 } from "../../types/ShapeType";
 import ShapeCanvas from "../canvas/ShapeCanvas";
+import ShapeEditorContainer from "../editors/ShapeEditorContainer";
 
+const shapeCompareFunction = (a: ShapeData, b: ShapeData) => {
+    if (a.id < b.id) {
+        return -1;
+    }
+    if (a.id > b.id) {
+        return 1;
+    }
+    return 0;
+};
+
+// TODO: try moving inline functions to the component if it doesn't break state
 const Container = () => {
     const [shapes, updateShapes] = useState<ShapeData[]>([]);
     const [hoveredShapeId, updateHoveredShapeId] = useState<string>("");
@@ -18,6 +32,7 @@ const Container = () => {
                 <h1 className="text-2xl font-bold">Shape Toy</h1>
             </div>
             <div className="flex flex-row px-2 gap-6">
+                {/* Create shape menu */}
                 <div className="flex flex-col gap-2">
                     <div
                         className="btn"
@@ -43,7 +58,7 @@ const Container = () => {
                         onClick={() => {
                             const newCircle: CircleData = {
                                 id: "",
-                                type: "rectangle",
+                                type: "circle",
                                 centerX: 100,
                                 centerY: 100,
                                 color: "black",
@@ -57,6 +72,7 @@ const Container = () => {
                         Add Circle
                     </div>
                 </div>
+                {/* Canvas */}
                 <div className="flex flex-col">
                     <ShapeCanvas
                         shapes={shapes}
@@ -64,11 +80,48 @@ const Container = () => {
                         selectedShapeIds={selectedShapeIds}
                     ></ShapeCanvas>
                 </div>
-                <div className="flex flex-col"></div>
-            </div>
-            {/* TODO: Delete this */}
-            <div className="testZone">
-                shapes len : {shapes.length.toString()}
+                {/* Shape properties */}
+                {/* TODO: fix overflow on this */}
+                <div className="flex flex-col">
+                    <div className="flex flex-col gap-2">
+                        {shapes
+                            // .filter(({ id }) => selectedShapeIds.includes(id))
+                            .filter(({ id }) => !selectedShapeIds.includes(id)) // TODO: remove when done debugging
+                            // These have to be sorted to not move around (in ui) when changing things
+                            .sort(shapeCompareFunction)
+                            .map((shape) => {
+                                return (
+                                    <ShapeEditorContainer
+                                        shapeData={shape}
+                                        onShapeUpdate={(newShapeData) => {
+                                            const newShapes = updateShape(
+                                                newShapeData,
+                                                shapes
+                                            );
+                                            updateShapes(newShapes);
+                                        }}
+                                        onShapeDelete={() => {
+                                            const newShapes = deleteShape(
+                                                shape,
+                                                shapes
+                                            );
+                                            updateShapes(newShapes);
+                                        }}
+                                        key={shape.id}
+                                    ></ShapeEditorContainer>
+                                );
+                            })}
+                    </div>
+                </div>
+                {/* TODO: Delete this */}
+                <div className="testZone">
+                    {shapes.map((shape) => {
+                        return (
+                            <div key={shape.id}>{JSON.stringify(shape)}</div>
+                        );
+                    })}
+                    {/* shapes len: {shapes.length.toString()} */}
+                </div>
             </div>
         </div>
     );
