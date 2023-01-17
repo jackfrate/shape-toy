@@ -1,19 +1,25 @@
-import { isRectangleData, ShapeData } from "../../types/ShapeType";
+import {
+    isCircleData,
+    isRectangleData,
+    ShapeData,
+} from "../../types/ShapeType";
+import CircleEditor from "./CircleEditor";
 import RectEditor from "./RectEditor";
 
 type Props = {
     shapeData: ShapeData;
     onShapeUpdate: (newShapeData: ShapeData) => void;
+    onShapeDelete: (shapeData: ShapeData) => void;
 };
 
 const ShapeEditorContainer: React.FC<Props> = ({
     shapeData,
     onShapeUpdate,
 }: Props) => {
-    // TODO: if we have time, change this up
+    // TODO: if we have time, change this up to not render twice
     const shapeSpecificOptions = () => {
-        // If more shapes were added, a static Record<ShapeType, () => React.FC>
-        // type would be better for storing this logic
+        // If more shapes were added, a Record of type Record<ShapeType, () => React.FC>
+        // would be better for storing this logic
         if (shapeData.type === "rectangle" && isRectangleData(shapeData)) {
             console.log("is a rectangle");
             return (
@@ -21,6 +27,16 @@ const ShapeEditorContainer: React.FC<Props> = ({
                     shapeData={shapeData}
                     onShapeUpdate={onShapeUpdate}
                 ></RectEditor>
+            );
+        }
+
+        if (shapeData.type === "circle" && isCircleData(shapeData)) {
+            console.log("is a circle");
+            return (
+                <CircleEditor
+                    shapeData={shapeData}
+                    onShapeUpdate={onShapeUpdate}
+                ></CircleEditor>
             );
         }
     };
@@ -40,7 +56,6 @@ const ShapeEditorContainer: React.FC<Props> = ({
                     <div className="font-bold">Center y</div>
                     <div>{shapeData.centerY}</div>
                 </div>
-                {/* put conditional for shape type here */}
                 <div className="flex flex-row gap-8 pl-4 items-center">
                     {shapeSpecificOptions()}
                 </div>
