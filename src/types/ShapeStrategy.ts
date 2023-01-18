@@ -1,4 +1,10 @@
-import { isRectangleData, RectangleData, ShapeData } from "./ShapeType";
+import {
+    CircleData,
+    isCircleData,
+    isRectangleData,
+    RectangleData,
+    ShapeData,
+} from "./ShapeType";
 
 export const drawShape = (
     shape: ShapeData,
@@ -7,6 +13,10 @@ export const drawShape = (
 ) => {
     if (shape.type === "rectangle" && isRectangleData(shape)) {
         drawRectangle(shape, ctx);
+    }
+
+    if (shape.type === "circle" && isCircleData(shape)) {
+        drawCircle(shape, ctx);
     }
 };
 
@@ -24,8 +34,10 @@ const drawRectangle = (
     ctx.fillRect(originX, originY, shape.width, shape.height);
 };
 
-const drawCircle = (
-    shape: ShapeData,
-    canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D
-) => {};
+const drawCircle = (shape: CircleData, ctx: CanvasRenderingContext2D) => {
+    ctx.beginPath();
+    ctx.arc(shape.centerX, shape.centerY, shape.radius, 0, Math.PI * 2);
+    ctx.fillStyle = shape.color;
+    ctx.fill();
+    ctx.closePath();
+};

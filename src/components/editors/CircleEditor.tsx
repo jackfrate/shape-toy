@@ -12,7 +12,7 @@ const CircleEditor: React.FC<Props> = ({ shapeData, onShapeUpdate }: Props) => {
                 <div className="font-bold">Radius</div>
                 <input
                     type="range"
-                    min="1"
+                    min="5"
                     max="250"
                     step={1}
                     value={shapeData.radius}

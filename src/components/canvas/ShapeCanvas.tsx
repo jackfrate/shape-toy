@@ -39,6 +39,11 @@ const ShapeCanvas: React.FC<Props> = ({
         unSelectedShapes.forEach((shape) => {
             drawShape(shape, canvas, context);
         });
+        
+        selectedShapes.forEach((shape) => {
+            drawShape(shape, canvas, context);
+        });
+        
 
         console.log("RERENDER");
     }, [shapes, hoveredShapeId, selectedShapeIds]);
