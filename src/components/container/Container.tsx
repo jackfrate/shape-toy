@@ -81,6 +81,9 @@ const Container = () => {
                         onShapeHover={(shapeId) =>
                             updateHoveredShapeId(shapeId ?? "")
                         }
+                        setSelectedShapeIds={(shapeIds) =>
+                            updateSelectedShapeIds(shapeIds)
+                        }
                     ></ShapeCanvas>
                 </div>
                 {/* Shape properties */}
@@ -88,8 +91,7 @@ const Container = () => {
                 <div className="flex flex-col">
                     <div className="flex flex-col gap-2">
                         {shapes
-                            // .filter(({ id }) => selectedShapeIds.includes(id))
-                            .filter(({ id }) => !selectedShapeIds.includes(id)) // TODO: remove when done debugging
+                            .filter(({ id }) => selectedShapeIds.includes(id))
                             // These have to be sorted to not move around (in ui) when changing things
                             .sort(shapeCompareFunction)
                             .map((shape) => {
@@ -123,7 +125,7 @@ const Container = () => {
                             <div key={shape.id}>{JSON.stringify(shape)}</div>
                         );
                     })}
-                    {/* shapes len: {shapes.length.toString()} */}
+                    selected shapes len: {selectedShapeIds.length.toString()}
                 </div>
             </div>
         </div>

@@ -9,14 +9,17 @@ const checkIfPointerInShape = (
     shapePaths: Map<string, Path2D>,
     ctx: CanvasRenderingContext2D
 ): string | undefined => {
+    let foundShapeId: string | undefined = undefined;
     shapePaths.forEach((path, shapeId) => {
         // Very nice that we can just cache the paths and use that to check
         if (ctx.isPointInPath(path, x, y)) {
+            console.log("found shape");
+            foundShapeId = shapeId;
             return shapeId;
         }
     });
 
-    return undefined;
+    return foundShapeId;
 };
 
 type Props = {
@@ -24,6 +27,7 @@ type Props = {
     hoveredShapeId: string | undefined;
     selectedShapeIds: string[];
     onShapeHover: (shapeId: string | undefined) => void;
+    setSelectedShapeIds: (shapeIds: string[]) => void;
 };
 
 const ShapeCanvas: React.FC<Props> = ({
@@ -31,6 +35,7 @@ const ShapeCanvas: React.FC<Props> = ({
     hoveredShapeId,
     selectedShapeIds,
     onShapeHover,
+    setSelectedShapeIds,
 }: Props) => {
     // TODO: when doing mouse hover / clicking, search in reverse to get the frontmost element
     // TODO: try the double canvas approach when finished
@@ -108,11 +113,6 @@ const ShapeCanvas: React.FC<Props> = ({
         console.log(`${hoveredShapeId} is hovered`);
     }, [shapes, hoveredShapeId]);
 
-    useEffect(
-        () => console.log(currentPointerCoordinates),
-        [currentPointerCoordinates]
-    );
-
     return (
         // In my experience, canvases can be weird with events
         // So I'll do all the event captures on this div
@@ -137,6 +137,28 @@ const ShapeCanvas: React.FC<Props> = ({
                     y: e.nativeEvent.offsetY,
                 })
             }
+            onClick={(e) => {
+                const clickedShapeId = checkIfPointerInShape(
+                    currentPointerCoordinates,
+                    shapePaths,
+                    // @ts-ignore
+                    shapeCanvasRef.current?.getContext("2d")
+                );
+                console.log(`found element ${clickedShapeId}`);
+                if (clickedShapeId === undefined) {
+                    console.log("clicked OUTSIDE element");
+
+                    setSelectedShapeIds([]);
+                    return;
+                }
+
+                const newSelectedShapeIds: string[] = e.shiftKey
+                    ? [...selectedShapeIds]
+                    : [];
+                newSelectedShapeIds.push(clickedShapeId);
+
+                setSelectedShapeIds(newSelectedShapeIds);
+            }}
         >
             <canvas
                 className="absolute z-0 pointer-events-none"
