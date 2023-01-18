@@ -15,6 +15,9 @@ const ShapeCanvas: React.FC<Props> = ({
     selectedShapeIds,
     onShapeHover
 }: Props) => {
+    // I used RxJS a lot, as my last job was in Angular. It's really good for chaining
+    // UI events in non-messy ways
+
     // TODO: when doing mouse hover / clicking, search in reverse to get the frontmost element
     // TODO: try the double canvas approach when finished
 
