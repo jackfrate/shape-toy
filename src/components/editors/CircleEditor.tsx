@@ -8,7 +8,7 @@ type Props = {
 const CircleEditor: React.FC<Props> = ({ shapeData, onShapeUpdate }: Props) => {
     return (
         <div className="flex flex-col">
-            <div className="flex flex-row gap-8 pl-4 items-center">
+            <div className="flex flex-row gap-8 items-center">
                 <div className="font-bold">Radius</div>
                 <input
                     type="range"

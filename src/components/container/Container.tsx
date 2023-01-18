@@ -34,7 +34,7 @@ const Container = () => {
                 {/* Create shape menu */}
                 <div className="flex flex-col gap-2">
                     <div
-                        className="btn"
+                        className="btn btn-primary"
                         onClick={() => {
                             const newRectangle: RectangleData = {
                                 id: "",
@@ -53,7 +53,7 @@ const Container = () => {
                         Add Rectangle
                     </div>
                     <div
-                        className="btn"
+                        className="btn btn-primary"
                         onClick={() => {
                             const newCircle: CircleData = {
                                 id: "",

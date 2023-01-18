@@ -7,8 +7,8 @@ type Props = {
 
 const RectEditor: React.FC<Props> = ({ shapeData, onShapeUpdate }: Props) => {
     return (
-        <div className="flex flex-col">
-            <div className="flex flex-row gap-8 pl-4 items-center">
+        <div className="flex flex-col gap-4">
+            <div className="flex flex-row gap-8 items-center">
                 <div className="font-bold">Width</div>
                 <input
                     type="range"
@@ -24,9 +24,8 @@ const RectEditor: React.FC<Props> = ({ shapeData, onShapeUpdate }: Props) => {
                         })
                     }
                 />
-                <div className="font-bold">Center x</div>
             </div>
-            <div className="flex flex-row gap-8 pl-4 items-center">
+            <div className="flex flex-row gap-8 items-center">
                 <div className="font-bold">Height</div>
                 <input
                     type="range"
@@ -42,7 +41,6 @@ const RectEditor: React.FC<Props> = ({ shapeData, onShapeUpdate }: Props) => {
                         })
                     }
                 />
-                <div className="font-bold">Center x</div>
             </div>
         </div>
     );
