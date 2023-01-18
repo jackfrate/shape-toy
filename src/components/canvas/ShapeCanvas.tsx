@@ -45,7 +45,7 @@ const ShapeCanvas: React.FC<Props> = ({
 
     const containerRef = useRef<HTMLDivElement>(null);
     const shapeCanvasRef = useRef<HTMLCanvasElement>(null);
-    // Used to avoid re-drawing entire canvas on hover 
+    // Used to avoid re-drawing entire canvas on hover
     // and ensure hover outline is always on top of everything
     const hoverOutlineCanvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -79,6 +79,7 @@ const ShapeCanvas: React.FC<Props> = ({
             // We do this with 2 (single use) event listeners that abort (via abort controller)
             // as soon as either of them trigger.
             const controller = new AbortController();
+
             // If mouse moves (shape being dragged) do nothing
             containerRef.current.addEventListener(
                 "mousemove",
@@ -183,7 +184,7 @@ const ShapeCanvas: React.FC<Props> = ({
             const path = drawShape(shape, shapeContext);
             newPathMap.set(shape.id, path);
         });
-        
+
         selectedShapes.forEach((shape) => {
             const path = drawShape(shape, shapeContext);
             newPathMap.set(shape.id, path);
