@@ -138,6 +138,32 @@ const ShapeCanvas: React.FC<Props> = ({
                         : [];
                     newSelectedShapeIds.push(clickedShapeId);
                     setSelectedShapeIds(newSelectedShapeIds);
+                } else if (clickedShapeId && containerRef.current) {
+                    // Handle deselection behavior. Only deselect on mouseup if we're not dragging
+                    // We do this with 2 (single use) event listeners that abort (via abort controller)
+                    // as soon as either of them trigger.
+                    const controller = new AbortController();
+                    // If mouse moves (shape being dragged) do nothing
+                    containerRef.current.addEventListener(
+                        "mousemove",
+                        () => {
+                            controller.abort();
+                        },
+                        { once: true, signal: controller.signal }
+                    );
+                    // If no mouse movement, deselect shape on mouseup
+                    containerRef.current.addEventListener(
+                        "mouseup",
+                        () => {
+                            setSelectedShapeIds(
+                                [...selectedShapeIds].filter(
+                                    (id) => id !== clickedShapeId
+                                )
+                            );
+                            controller.abort();
+                        },
+                        { once: true, signal: controller.signal }
+                    );
                 }
             }}
             onMouseUp={() => {
