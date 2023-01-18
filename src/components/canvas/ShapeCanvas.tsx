@@ -4,7 +4,7 @@ import { ShapeData } from "../../types/ShapeType";
 
 type Coordinate = { x: number; y: number };
 
-const checkIfPointerInShape = (
+const getShapeIdUnderPointer = (
     { x, y }: Coordinate,
     shapePaths: Map<string, Path2D>,
     ctx: CanvasRenderingContext2D
@@ -13,7 +13,6 @@ const checkIfPointerInShape = (
     shapePaths.forEach((path, shapeId) => {
         // Very nice that we can just cache the paths and use that to check
         if (ctx.isPointInPath(path, x, y)) {
-            console.log("found shape");
             foundShapeId = shapeId;
             return shapeId;
         }
@@ -24,21 +23,18 @@ const checkIfPointerInShape = (
 
 type Props = {
     shapes: ShapeData[];
-    hoveredShapeId: string | undefined;
     selectedShapeIds: string[];
-    onShapeHover: (shapeId: string | undefined) => void;
     setSelectedShapeIds: (shapeIds: string[]) => void;
 };
 
 const ShapeCanvas: React.FC<Props> = ({
     shapes,
-    hoveredShapeId,
     selectedShapeIds,
-    onShapeHover,
     setSelectedShapeIds,
 }: Props) => {
     // TODO: when doing mouse hover / clicking, search in reverse to get the frontmost element
-    // TODO: try the double canvas approach when finished
+    // TODO: try and extract functions from template if that makes sense
+    const [hoveredShapeId, updateHoveredShapeId] = useState<string>("");
 
     const [pointerIsDown, setPointerIsDown] = useState(false);
     const [pointerdownCoordinates, setPointerdownCoordinates] =
@@ -98,21 +94,6 @@ const ShapeCanvas: React.FC<Props> = ({
         console.log("RERENDER");
     }, [shapes, selectedShapeIds]);
 
-    // Update hover on shapes
-    useEffect(() => {
-        const outlineCanvas = outlineCanvasRef.current;
-        if (
-            !outlineCanvas ||
-            !hoveredShapeId ||
-            !shapes.some(({ id }) => id === hoveredShapeId)
-        ) {
-            console.log("nothing is hovered");
-            return;
-        }
-        // TODO: draw hover outline if needed
-        console.log(`${hoveredShapeId} is hovered`);
-    }, [shapes, hoveredShapeId]);
-
     return (
         // In my experience, canvases can be weird with events
         // So I'll do all the event captures on this div
@@ -131,14 +112,30 @@ const ShapeCanvas: React.FC<Props> = ({
             }}
             // ensure we don't get buggy dragging
             onMouseLeave={() => setPointerIsDown(false)}
-            onMouseMove={(e) =>
-                setCurrentPointerCoordinates({
+            onMouseMove={(e) => {
+                const coords = {
                     x: e.nativeEvent.offsetX,
                     y: e.nativeEvent.offsetY,
-                })
-            }
+                };
+
+                setCurrentPointerCoordinates(coords);
+
+                const shapeUnderPointer = getShapeIdUnderPointer(
+                    coords,
+                    shapePaths,
+                    // @ts-ignore
+                    shapeCanvasRef.current?.getContext("2d")
+                );
+                if (shapeUnderPointer && shapeUnderPointer !== hoveredShapeId) {
+                    console.log("setting hovered shape id");
+                    updateHoveredShapeId(shapeUnderPointer);
+                }
+                if (shapeUnderPointer === undefined) {
+                    console.log("nothing hovered anymore");
+                }
+            }}
             onClick={(e) => {
-                const clickedShapeId = checkIfPointerInShape(
+                const clickedShapeId = getShapeIdUnderPointer(
                     currentPointerCoordinates,
                     shapePaths,
                     // @ts-ignore

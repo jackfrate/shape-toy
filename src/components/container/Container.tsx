@@ -23,7 +23,6 @@ const shapeCompareFunction = (a: ShapeData, b: ShapeData) => {
 // TODO: try moving inline functions to the component if it doesn't break state
 const Container = () => {
     const [shapes, updateShapes] = useState<ShapeData[]>([]);
-    const [hoveredShapeId, updateHoveredShapeId] = useState<string>("");
     const [selectedShapeIds, updateSelectedShapeIds] = useState<string[]>([]);
 
     return (
@@ -76,11 +75,7 @@ const Container = () => {
                 <div className="flex flex-col">
                     <ShapeCanvas
                         shapes={shapes}
-                        hoveredShapeId={hoveredShapeId}
                         selectedShapeIds={selectedShapeIds}
-                        onShapeHover={(shapeId) =>
-                            updateHoveredShapeId(shapeId ?? "")
-                        }
                         setSelectedShapeIds={(shapeIds) =>
                             updateSelectedShapeIds(shapeIds)
                         }
