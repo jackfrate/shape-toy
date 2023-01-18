@@ -6,11 +6,15 @@ import {
     ShapeData,
 } from "./ShapeType";
 
-// TODO: remove the canvas
+// Drawing functions. Since there are 2 canvases, 
+// we can use these on either
+
 export const drawShape = (
     shape: ShapeData,
     ctx: CanvasRenderingContext2D
 ): Path2D => {
+    ctx.fillStyle = shape.color;
+
     if (shape.type === "rectangle" && isRectangleData(shape)) {
         return drawRectangle(shape, ctx);
     }
@@ -18,8 +22,8 @@ export const drawShape = (
     if (shape.type === "circle" && isCircleData(shape)) {
         return drawCircle(shape, ctx);
     }
-    // This should never be hit, but is just here for typescript for now
-    return new Path2D();
+
+    throw new Error("Shape must be a rectangle or circle");
 };
 
 export const strokeShape = (
@@ -38,8 +42,8 @@ export const strokeShape = (
     if (shape.type === "circle" && isCircleData(shape)) {
         return strokeCircle(shape, ctx, outlineOffset, outlineColor);
     }
-    // This should never be hit, but is just here for typescript for now
-    return new Path2D();
+
+    throw new Error("Shape must be a rectangle or circle");
 };
 
 // Again, I'd put these function references in a map to access
@@ -54,7 +58,6 @@ const drawRectangle = (
     const path = new Path2D();
     path.rect(originX, originY, shape.width, shape.height);
 
-    ctx.fillStyle = shape.color;
     ctx.fill(path);
 
     return path;
@@ -67,7 +70,6 @@ const drawCircle = (
     const path = new Path2D();
     path.arc(shape.centerX, shape.centerY, shape.radius, 0, Math.PI * 2);
 
-    ctx.fillStyle = shape.color;
     ctx.fill(path);
 
     return path;
