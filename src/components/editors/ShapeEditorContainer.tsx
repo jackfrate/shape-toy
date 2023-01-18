@@ -44,7 +44,10 @@ const ShapeEditorContainer: React.FC<Props> = ({
         <div className="card w-96 bg-base-300 shadow-xl">
             <div className="card-body flex flex-col gap-4">
                 <div className="flex flex-row justify-between items-center">
-                    <div className="btn btn-error" onClick={() => onShapeDelete()}>
+                    <div
+                        className="btn btn-error"
+                        onClick={() => onShapeDelete()}
+                    >
                         Delete
                     </div>
                     <div className="capitalize text-xl">{shapeData.type}</div>
@@ -62,7 +65,18 @@ const ShapeEditorContainer: React.FC<Props> = ({
                 </div>
                 <div className="flex flex-row gap-8 pl-4 items-center">
                     <div className="font-bold">Color</div>
-                    <div>picker here</div>
+                    <input
+                        type="color"
+                        name="color"
+                        value={shapeData.color}
+                        onChange={(e) => {
+                            const newShapeData = {
+                                ...shapeData,
+                                color: e.currentTarget.value,
+                            };
+                            onShapeUpdate(newShapeData);
+                        }}
+                    />
                 </div>
             </div>
         </div>

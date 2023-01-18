@@ -159,7 +159,6 @@ const ShapeCanvas: React.FC<Props> = ({
                                 updatedShapes
                             );
                         });
-                    console.log("yeet");
                     setShapesList(updatedShapes);
                 }
 

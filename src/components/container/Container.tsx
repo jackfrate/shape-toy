@@ -41,7 +41,7 @@ const Container = () => {
                                 type: "rectangle",
                                 centerX: 250,
                                 centerY: 250,
-                                color: "blue",
+                                color: "#000000",
                                 width: 50,
                                 height: 50,
                             };
@@ -60,7 +60,7 @@ const Container = () => {
                                 type: "circle",
                                 centerX: 250,
                                 centerY: 250,
-                                color: "green",
+                                color: "#000000",
                                 radius: 50,
                             };
 
