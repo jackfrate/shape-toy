@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { ShapeData, updateShape } from "../../types/ShapeType";
+import { updateShape } from "../../utils/ShapeCrud";
 import { drawShape, strokeShape } from "../../utils/ShapeDrawingStrategy";
+import { ShapeData } from "../../utils/ShapeType";
 
 type Coordinate = { x: number; y: number };
 

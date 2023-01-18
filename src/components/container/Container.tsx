@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-    CircleData,
-    createShape,
-    deleteShape,
-    RectangleData,
-    ShapeData,
-    updateShape,
-} from "../../types/ShapeType";
+import { createShape, deleteShape, updateShape } from "../../utils/ShapeCrud";
+import { CircleData, RectangleData, ShapeData } from "../../utils/ShapeType";
 import ShapeCanvas from "../canvas/ShapeCanvas";
 import ShapeEditorContainer from "../editors/ShapeEditorContainer";
 
@@ -18,6 +12,27 @@ const shapeCompareFunction = (a: ShapeData, b: ShapeData) => {
         return 1;
     }
     return 0;
+};
+
+// Default shape data for making new shapes,
+// the ID is filled in when creating
+const newRectangle: RectangleData = {
+    id: "",
+    type: "rectangle",
+    centerX: 250,
+    centerY: 250,
+    color: "#000000",
+    width: 50,
+    height: 50,
+};
+
+const newCircle: CircleData = {
+    id: "",
+    type: "circle",
+    centerX: 250,
+    centerY: 250,
+    color: "#000000",
+    radius: 50,
 };
 
 // TODO: try moving inline functions to the component if it doesn't break state
@@ -36,16 +51,6 @@ const Container = () => {
                     <div
                         className="btn btn-primary w-40"
                         onClick={() => {
-                            const newRectangle: RectangleData = {
-                                id: "",
-                                type: "rectangle",
-                                centerX: 250,
-                                centerY: 250,
-                                color: "#000000",
-                                width: 50,
-                                height: 50,
-                            };
-
                             const newShapes = createShape(newRectangle, shapes);
                             updateShapes(newShapes);
                         }}
@@ -55,15 +60,6 @@ const Container = () => {
                     <div
                         className="btn btn-primary w-40"
                         onClick={() => {
-                            const newCircle: CircleData = {
-                                id: "",
-                                type: "circle",
-                                centerX: 250,
-                                centerY: 250,
-                                color: "#000000",
-                                radius: 50,
-                            };
-
                             const newShapes = createShape(newCircle, shapes);
                             updateShapes(newShapes);
                         }}
@@ -87,7 +83,8 @@ const Container = () => {
                     <div className="flex flex-col gap-2">
                         {shapes
                             .filter(({ id }) => selectedShapeIds.includes(id))
-                            // These have to be sorted to not move around (in ui) when changing things
+                            // The shape edit menus have to be sorted consistently here,
+                            // otherwise they will move around when editing (not good)
                             .sort(shapeCompareFunction)
                             .map((shape) => {
                                 return (

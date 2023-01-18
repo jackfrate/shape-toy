@@ -1,4 +1,4 @@
-import { RectangleData } from "../../types/ShapeType";
+import { RectangleData } from "../../utils/ShapeType";
 
 type Props = {
     shapeData: RectangleData;

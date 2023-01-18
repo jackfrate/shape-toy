@@ -2,7 +2,7 @@ import {
     isCircleData,
     isRectangleData,
     ShapeData,
-} from "../../types/ShapeType";
+} from "../../utils/ShapeType";
 import CircleEditor from "./CircleEditor";
 import RectEditor from "./RectEditor";
 

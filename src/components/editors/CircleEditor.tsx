@@ -1,4 +1,4 @@
-import { CircleData } from "../../types/ShapeType";
+import { CircleData } from "../../utils/ShapeType";
 
 type Props = {
     shapeData: CircleData;
