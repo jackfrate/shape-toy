@@ -39,8 +39,6 @@ const ShapeCanvas: React.FC<Props> = ({
     const [hoveredShapeId, updateHoveredShapeId] = useState<string>("");
 
     const [pointerIsDown, setPointerIsDown] = useState(false);
-    const [pointerdownCoordinates, setPointerdownCoordinates] =
-        useState<Coordinate>({ x: 0, y: 0 });
 
     const [shapePaths, setShapePaths] = useState<Map<string, Path2D>>(
         new Map()
@@ -104,10 +102,6 @@ const ShapeCanvas: React.FC<Props> = ({
             ref={containerRef}
             onMouseDown={(e) => {
                 setPointerIsDown(true);
-                setPointerdownCoordinates({
-                    x: e.nativeEvent.offsetX,
-                    y: e.nativeEvent.offsetY,
-                });
 
                 // Setting active shape logic
                 const clickedShapeId = getShapeIdUnderPointer(
@@ -116,9 +110,13 @@ const ShapeCanvas: React.FC<Props> = ({
                     // @ts-ignore
                     shapeCanvasRef.current?.getContext("2d")
                 );
-                if (clickedShapeId === undefined) {
+
+                if (!clickedShapeId) {
                     setSelectedShapeIds([]);
-                } else {
+                } else if (
+                    clickedShapeId &&
+                    !selectedShapeIds.includes(clickedShapeId)
+                ) {
                     const newSelectedShapeIds: string[] = e.shiftKey
                         ? [...selectedShapeIds]
                         : [];
@@ -178,9 +176,6 @@ const ShapeCanvas: React.FC<Props> = ({
                 if (shapeUnderPointer === undefined) {
                     updateHoveredShapeId("");
                 }
-            }}
-            onClick={(e) => {
-                // TODO: move this over to the mousedown handler
             }}
         >
             <canvas

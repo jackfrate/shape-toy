@@ -107,6 +107,7 @@ const Container = () => {
                                                 shapes
                                             );
                                             updateShapes(newShapes);
+                                            // TODO: stop selected shape ID's from lingering
                                         }}
                                         key={shape.id}
                                     ></ShapeEditorContainer>
