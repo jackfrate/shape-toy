@@ -17,9 +17,7 @@ export interface CircleData extends ShapeData {
     radius: number;
 }
 
-//
 // Type guards
-//
 
 export const isRectangleData = (shapeData: any): shapeData is RectangleData => {
     return shapeData.width !== undefined && shapeData.height !== undefined;

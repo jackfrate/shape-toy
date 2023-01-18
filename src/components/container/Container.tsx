@@ -35,7 +35,6 @@ const newCircle: CircleData = {
     radius: 50,
 };
 
-// TODO: try moving inline functions to the component if it doesn't break state
 const Container = () => {
     const [shapes, updateShapes] = useState<ShapeData[]>([]);
     const [selectedShapeIds, updateSelectedShapeIds] = useState<string[]>([]);

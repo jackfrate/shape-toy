@@ -6,8 +6,8 @@ import {
     ShapeData,
 } from "./ShapeType";
 
-// Drawing functions. Since there are 2 canvases,
-// we can use these on either
+// Drawing / Stroking functions. Since there are 2 canvases,
+// we can use these on either canvas' context
 
 export const drawShape = (
     shape: ShapeData,
@@ -48,6 +48,9 @@ export const strokeShape = (
 
 // Again, I'd put these function references in a map to access
 // if there were more than 2 being used. (see comment in ../ShapeType.ts)
+
+// Internal drawing functions
+
 const drawRectangle = (
     shape: RectangleData,
     ctx: CanvasRenderingContext2D
@@ -74,6 +77,8 @@ const drawCircle = (
 
     return path;
 };
+
+// Internal Stroke functions
 
 const strokeRectangle = (
     shape: RectangleData,

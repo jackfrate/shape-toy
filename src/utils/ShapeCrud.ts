@@ -2,9 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 import { ShapeData } from "./ShapeType";
 
 // Crud Operations for shapes
-// They all return a new array instead of 
-// changing the old one
-
+// They all return a new array instead of
+// mutating the old one
 
 export const createShape = (
     newShape: ShapeData,
