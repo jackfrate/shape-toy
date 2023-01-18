@@ -22,7 +22,6 @@ const ShapeEditorContainer: React.FC<Props> = ({
         // If more shapes were added, a Record of type Record<ShapeType, () => React.FC>
         // would be better for storing this logic
         if (shapeData.type === "rectangle" && isRectangleData(shapeData)) {
-            console.log("is a rectangle");
             return (
                 <RectEditor
                     shapeData={shapeData}
@@ -32,7 +31,6 @@ const ShapeEditorContainer: React.FC<Props> = ({
         }
 
         if (shapeData.type === "circle" && isCircleData(shapeData)) {
-            console.log("is a circle");
             return (
                 <CircleEditor
                     shapeData={shapeData}

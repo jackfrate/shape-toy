@@ -18,8 +18,7 @@ export const drawShape = (
     if (shape.type === "circle" && isCircleData(shape)) {
         return drawCircle(shape, ctx);
     }
-
-    console.log("==============YOU SHOULD NEVER GET HERE");
+    // This should never be hit, but is just here for typescript for now
     return new Path2D();
 };
 

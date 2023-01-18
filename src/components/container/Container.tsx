@@ -79,6 +79,7 @@ const Container = () => {
                         setSelectedShapeIds={(shapeIds) =>
                             updateSelectedShapeIds(shapeIds)
                         }
+                        setShapesList={(shapes) => updateShapes(shapes)}
                     ></ShapeCanvas>
                 </div>
                 {/* Shape properties */}

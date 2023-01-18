@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { drawShape } from "../../types/ShapeStrategy";
-import { ShapeData } from "../../types/ShapeType";
+import { ShapeData, updateShape } from "../../types/ShapeType";
 
 type Coordinate = { x: number; y: number };
 
@@ -25,12 +25,14 @@ type Props = {
     shapes: ShapeData[];
     selectedShapeIds: string[];
     setSelectedShapeIds: (shapeIds: string[]) => void;
+    setShapesList: (shapes: ShapeData[]) => void;
 };
 
 const ShapeCanvas: React.FC<Props> = ({
     shapes,
     selectedShapeIds,
     setSelectedShapeIds,
+    setShapesList,
 }: Props) => {
     // TODO: when doing mouse hover / clicking, search in reverse to get the frontmost element
     // TODO: try and extract functions from template if that makes sense
@@ -106,6 +108,23 @@ const ShapeCanvas: React.FC<Props> = ({
                     x: e.nativeEvent.offsetX,
                     y: e.nativeEvent.offsetY,
                 });
+
+                // Setting active shape logic
+                const clickedShapeId = getShapeIdUnderPointer(
+                    currentPointerCoordinates,
+                    shapePaths,
+                    // @ts-ignore
+                    shapeCanvasRef.current?.getContext("2d")
+                );
+                if (clickedShapeId === undefined) {
+                    setSelectedShapeIds([]);
+                } else {
+                    const newSelectedShapeIds: string[] = e.shiftKey
+                        ? [...selectedShapeIds]
+                        : [];
+                    newSelectedShapeIds.push(clickedShapeId);
+                    setSelectedShapeIds(newSelectedShapeIds);
+                }
             }}
             onMouseUp={() => {
                 setPointerIsDown(false);
@@ -113,13 +132,40 @@ const ShapeCanvas: React.FC<Props> = ({
             // ensure we don't get buggy dragging
             onMouseLeave={() => setPointerIsDown(false)}
             onMouseMove={(e) => {
+                // Handle moving logic
                 const coords = {
                     x: e.nativeEvent.offsetX,
                     y: e.nativeEvent.offsetY,
                 };
-
                 setCurrentPointerCoordinates(coords);
 
+                if (pointerIsDown) {
+                    const xDiff = e.nativeEvent.movementX;
+                    const yDiff = e.nativeEvent.movementY;
+
+                    let updatedShapes = [...shapes];
+                    shapes
+                        .filter(
+                            ({ id }) =>
+                                selectedShapeIds.includes(id) ||
+                                id === hoveredShapeId
+                        )
+                        .forEach((shape) => {
+                            const newShape: ShapeData = {
+                                ...shape,
+                                centerX: shape.centerX + xDiff,
+                                centerY: shape.centerY + yDiff,
+                            };
+                            updatedShapes = updateShape(
+                                newShape,
+                                updatedShapes
+                            );
+                        });
+                    console.log("yeet");
+                    setShapesList(updatedShapes);
+                }
+
+                // Handle hover logic
                 const shapeUnderPointer = getShapeIdUnderPointer(
                     coords,
                     shapePaths,
@@ -127,34 +173,14 @@ const ShapeCanvas: React.FC<Props> = ({
                     shapeCanvasRef.current?.getContext("2d")
                 );
                 if (shapeUnderPointer && shapeUnderPointer !== hoveredShapeId) {
-                    console.log("setting hovered shape id");
                     updateHoveredShapeId(shapeUnderPointer);
                 }
                 if (shapeUnderPointer === undefined) {
-                    console.log("nothing hovered anymore");
+                    updateHoveredShapeId("");
                 }
             }}
             onClick={(e) => {
-                const clickedShapeId = getShapeIdUnderPointer(
-                    currentPointerCoordinates,
-                    shapePaths,
-                    // @ts-ignore
-                    shapeCanvasRef.current?.getContext("2d")
-                );
-                console.log(`found element ${clickedShapeId}`);
-                if (clickedShapeId === undefined) {
-                    console.log("clicked OUTSIDE element");
-
-                    setSelectedShapeIds([]);
-                    return;
-                }
-
-                const newSelectedShapeIds: string[] = e.shiftKey
-                    ? [...selectedShapeIds]
-                    : [];
-                newSelectedShapeIds.push(clickedShapeId);
-
-                setSelectedShapeIds(newSelectedShapeIds);
+                // TODO: move this over to the mousedown handler
             }}
         >
             <canvas
