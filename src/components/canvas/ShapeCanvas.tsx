@@ -6,12 +6,14 @@ type Props = {
     shapes: ShapeData[];
     hoveredShapeId: string | undefined;
     selectedShapeIds: string[];
+    onShapeHover: (shapeId: string | undefined) => void
 };
 
 const ShapeCanvas: React.FC<Props> = ({
     shapes,
     hoveredShapeId,
     selectedShapeIds,
+    onShapeHover
 }: Props) => {
     // TODO: when doing mouse hover / clicking, search in reverse to get the frontmost element
     // TODO: try the double canvas approach when finished

@@ -78,6 +78,9 @@ const Container = () => {
                         shapes={shapes}
                         hoveredShapeId={hoveredShapeId}
                         selectedShapeIds={selectedShapeIds}
+                        onShapeHover={(shapeId) =>
+                            updateHoveredShapeId(shapeId ?? "")
+                        }
                     ></ShapeCanvas>
                 </div>
                 {/* Shape properties */}
