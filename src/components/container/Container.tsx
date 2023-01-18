@@ -15,7 +15,7 @@ const shapeCompareFunction = (a: ShapeData, b: ShapeData) => {
 };
 
 // Default shape data for making new shapes,
-// the ID is filled in when creating
+// the ID is filled in upon creation
 const newRectangle: RectangleData = {
     id: "",
     type: "rectangle",
