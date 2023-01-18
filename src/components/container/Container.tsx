@@ -40,8 +40,8 @@ const Container = () => {
                             const newRectangle: RectangleData = {
                                 id: "",
                                 type: "rectangle",
-                                centerX: 100,
-                                centerY: 100,
+                                centerX: 250,
+                                centerY: 250,
                                 color: "black",
                                 width: 50,
                                 height: 50,
@@ -59,8 +59,8 @@ const Container = () => {
                             const newCircle: CircleData = {
                                 id: "",
                                 type: "circle",
-                                centerX: 100,
-                                centerY: 100,
+                                centerX: 250,
+                                centerY: 250,
                                 color: "black",
                                 radius: 50,
                             };
