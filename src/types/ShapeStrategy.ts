@@ -6,7 +6,6 @@ import {
     ShapeData,
 } from "./ShapeType";
 
-// TODO: remove the canvas
 export const drawShape = (
     shape: ShapeData,
     ctx: CanvasRenderingContext2D

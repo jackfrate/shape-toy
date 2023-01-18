@@ -17,7 +17,6 @@ const ShapeEditorContainer: React.FC<Props> = ({
     onShapeUpdate,
     onShapeDelete,
 }: Props) => {
-    // TODO: if we have time, change this up to not render twice
     const shapeSpecificOptions = () => {
         // If more shapes were added, a Record of type Record<ShapeType, () => React.FC>
         // would be better for storing this logic

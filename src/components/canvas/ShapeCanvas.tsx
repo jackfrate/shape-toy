@@ -111,8 +111,8 @@ const ShapeCanvas: React.FC<Props> = ({
     }, [shapes, hoveredShapeId, shapePaths]);
 
     return (
-        // In my experience, canvases can be weird with events
-        // So I'll do all the event captures on this div
+        // In my experience, canvases can be weird with events occasionally,
+        // so I'll do all the event captures on this div
         <div
             className="h-[500px] w-[500px] bg-white relative"
             ref={containerRef}

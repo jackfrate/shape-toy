@@ -6,7 +6,7 @@ import {
     ShapeData,
 } from "./ShapeType";
 
-// Drawing functions. Since there are 2 canvases, 
+// Drawing functions. Since there are 2 canvases,
 // we can use these on either
 
 export const drawShape = (
@@ -32,7 +32,7 @@ export const strokeShape = (
     isHover: boolean = false
 ) => {
     const outlineOffset = isHover ? 6 : 2;
-    const outlineColor = isHover ? "red" : "blue";
+    const outlineColor = isHover ? "rgba(0, 151, 204, 0.75)" : "#fc9003";
     ctx.lineWidth = 4;
 
     if (shape.type === "rectangle" && isRectangleData(shape)) {

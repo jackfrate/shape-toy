@@ -83,7 +83,6 @@ const Container = () => {
                     ></ShapeCanvas>
                 </div>
                 {/* Shape properties */}
-                {/* TODO: fix overflow on this */}
                 <div className="flex flex-col">
                     <div className="flex flex-col gap-2">
                         {shapes
@@ -107,22 +106,12 @@ const Container = () => {
                                                 shapes
                                             );
                                             updateShapes(newShapes);
-                                            // TODO: stop selected shape ID's from lingering
                                         }}
                                         key={shape.id}
                                     ></ShapeEditorContainer>
                                 );
                             })}
                     </div>
-                </div>
-                {/* TODO: Delete this */}
-                <div className="testZone">
-                    {shapes.map((shape) => {
-                        return (
-                            <div key={shape.id}>{JSON.stringify(shape)}</div>
-                        );
-                    })}
-                    selected shapes len: {selectedShapeIds.length.toString()}
                 </div>
             </div>
         </div>
