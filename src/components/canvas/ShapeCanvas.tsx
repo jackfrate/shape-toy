@@ -14,17 +14,23 @@ const ShapeCanvas: React.FC<Props> = ({
     selectedShapeIds,
 }: Props) => {
     // TODO: when doing mouse hover / clicking, search in reverse to get the frontmost element
+    // TODO: try the double canvas approach when finished
 
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const shapeCanvasRef = useRef<HTMLCanvasElement>(null);
+    // Used to avoid re-drawing entire canvas on hover
+    const outlineCanvasRef = useRef<HTMLCanvasElement>(null);
 
+    // Update shapes and
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) {
+        const shapeCanvas = shapeCanvasRef.current;
+        if (!shapeCanvas) {
             return;
         }
 
-        const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-        context.clearRect(0, 0, 500, 500);
+        const shapeContext = shapeCanvas.getContext(
+            "2d"
+        ) as CanvasRenderingContext2D;
+        shapeContext.clearRect(0, 0, 500, 500);
 
         // Draw the non selected shapes first to avoid any artifacting when
         // selected shapes overlap non-selected shapes
@@ -37,22 +43,47 @@ const ShapeCanvas: React.FC<Props> = ({
         );
 
         unSelectedShapes.forEach((shape) => {
-            drawShape(shape, canvas, context);
+            drawShape(shape, shapeContext);
         });
-        
+
         selectedShapes.forEach((shape) => {
-            drawShape(shape, canvas, context);
+            drawShape(shape, shapeContext);
+            // TODO: draw selected outline
         });
-        
 
         console.log("RERENDER");
-    }, [shapes, hoveredShapeId, selectedShapeIds]);
+    }, [shapes, selectedShapeIds]);
+
+    useEffect(() => {
+        const outlineCanvas = outlineCanvasRef.current;
+        if (
+            !outlineCanvas ||
+            !hoveredShapeId ||
+            !shapes.some(({ id }) => id === hoveredShapeId)
+        ) {
+            console.log("nothing is hovered");
+            return;
+        }
+        // TODO: draw hover outline if needed
+        console.log(`${hoveredShapeId} is hovered`);
+    }, [shapes, hoveredShapeId]);
 
     return (
         // In my experience, canvases can be weird with events
         // So I'll do all the event captures on this div
-        <div className="h-[500px] w-[500px] bg-white">
-            <canvas width={500} height={500} ref={canvasRef}></canvas>
+        <div className="h-[500px] w-[500px] bg-white relative">
+            <canvas
+                className="absolute z-0 pointer-events-none"
+                width={500}
+                height={500}
+                ref={shapeCanvasRef}
+            ></canvas>
+            <canvas
+                className="absolute z-10 pointer-events-none"
+                width={500}
+                height={500}
+                ref={outlineCanvasRef}
+            ></canvas>
         </div>
     );
 };

@@ -6,9 +6,9 @@ import {
     ShapeData,
 } from "./ShapeType";
 
+// TODO: remove the canvas
 export const drawShape = (
     shape: ShapeData,
-    canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D
 ) => {
     if (shape.type === "rectangle" && isRectangleData(shape)) {
@@ -20,7 +20,14 @@ export const drawShape = (
     }
 };
 
-// Again, I'd put these function references in a map
+export const strokeShape = (
+    shape: ShapeData,
+    context: CanvasRenderingContext2D
+) => {
+    
+}; 
+
+// Again, I'd put these function references in a map to access
 // if there were more than 2 being used. (see comment in ../ShapeType.ts)
 const drawRectangle = (
     shape: RectangleData,
