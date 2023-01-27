@@ -14,6 +14,7 @@ const shapeCompareFunction = (a: ShapeData, b: ShapeData) => {
     return 0;
 };
 
+// ? move these 2 to the creation functions
 // Default shape data for making new shapes,
 // the ID is filled in upon creation
 const newRectangle: RectangleData = {
@@ -68,6 +69,7 @@ const Container = () => {
                 </div>
                 {/* Canvas */}
                 <div className="flex flex-col">
+                    {/* ? could be using way more self closing tags (angular habits die hard) */}
                     <ShapeCanvas
                         shapes={shapes}
                         selectedShapeIds={selectedShapeIds}
@@ -82,6 +84,7 @@ const Container = () => {
                     <div className="flex flex-col gap-2">
                         {shapes
                             .filter(({ id }) => selectedShapeIds.includes(id))
+                            // ? order these by time
                             // The shape edit menus have to be sorted consistently here,
                             // otherwise they will move around when editing (not good)
                             .sort(shapeCompareFunction)
@@ -94,6 +97,7 @@ const Container = () => {
                                                 newShapeData,
                                                 shapes
                                             );
+                                            // ? updateShape / updateShapes is confusing naming
                                             updateShapes(newShapes);
                                         }}
                                         onShapeDelete={() => {
