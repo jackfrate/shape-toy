@@ -54,6 +54,8 @@ const ShapeCanvas: React.FC<Props> = ({
     ) => {
         setMouseIsDown(true);
 
+        // ? good method to fix ts-ignores in this file
+
         // Setting active shape logic
         const clickedShapeId = getShapeIdUnderPointer(
             currentMouseCoordinates,
@@ -118,6 +120,7 @@ const ShapeCanvas: React.FC<Props> = ({
             const xDiff = e.nativeEvent.movementX;
             const yDiff = e.nativeEvent.movementY;
 
+            // ? could do the declaration here and map instead of foreach
             let updatedShapes = [...shapes];
             shapes
                 .filter(
@@ -180,6 +183,7 @@ const ShapeCanvas: React.FC<Props> = ({
             selectedShapeIds.includes(id)
         );
 
+        // ? could just re-use unselected shape entries, as they won't change
         unSelectedShapes.forEach((shape) => {
             const path = drawShape(shape, shapeContext);
             newPathMap.set(shape.id, path);
